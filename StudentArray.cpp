@@ -1,3 +1,9 @@
+/*
+    ================================================================================================================
+    Author - Suruchi Shrey
+    Roll no. - BT18CSE014
+    ================================================================================================================
+*/
 #include"StudentArray.h"
 
 StudentArray::StudentArray()
@@ -30,6 +36,7 @@ Student& StudentArray::operator [](int index)
     }
 }
 
+//destructor freeing the memory which we had allocated through constructor
 StudentArray::~StudentArray()
 {
     cout<<"\nDestructing Student Database";
@@ -37,6 +44,6 @@ StudentArray::~StudentArray()
     {
         delete student[i];
     }
-    cout<<"\nDestructed Student database\n";
+    cout<<"\nStudent database destructed.\n";
 }
 

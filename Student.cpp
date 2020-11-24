@@ -44,7 +44,7 @@ void Student::operator delete(void* ptr)
 
 void Student::display_data()
 {
-     cout<<"\nName :   "<<this->name<<"\nRoll No :    "<<this->roll_no<<"\nBranch   : "<<this->branch;
+     cout<<"\nName    :   "<<this->name<<"\nRoll No :   "<<this->roll_no<<"\nBranch  :   "<<this->branch;
 }
 
 char* Student::getName()
