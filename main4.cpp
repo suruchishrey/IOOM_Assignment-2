@@ -46,7 +46,7 @@ int main()
         catch(runtime_error& e) { 
     
             // prints that exception has occurred, calls the what function using runtime_error object 
-            cout << "Exception occurred" << endl 
+            cout << "\nException occurred" << endl 
                 << e.what(); 
                 cout<<"\nEnter new values\n";
         } 
