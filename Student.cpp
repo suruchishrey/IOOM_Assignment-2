@@ -5,10 +5,12 @@
     ================================================================================================================
 */
 
-#include<string.h>
+//this file contains the definitions of all the functions declared in "Student.h"
+
 #include"Student.h"
 using namespace std;
 
+//default constructor
 Student::Student(){
     cout<<"\nConstructor called allocating memory for name and branch";
     //allocating memory in heap
@@ -16,6 +18,7 @@ Student::Student(){
     this->branch=::new char[10];
 }
 
+//parameterized constructor
 Student::Student(char name[],int rno,char branch[])
 {
     cout<<"\nConstructor called allocating memory for name and branch";
@@ -27,6 +30,7 @@ Student::Student(char name[],int rno,char branch[])
     this->setBranch(branch);
 }
 
+//copy constructor
 Student::Student(const Student &obj)
 {
     cout<<"\nConstructor called allocating memory for name and branch";
@@ -38,14 +42,16 @@ Student::Student(const Student &obj)
     this->setRollNo(obj.roll_no);
 }
 
-//Allocating memory for Student object
+//Overloading new,Allocating memory for Student object
 void* Student::operator new(size_t size)
 {
     cout<<"\nConstructing Student Object(new)";
+    //allocating memory for student object on stack
     void*newptr=malloc(size);
     return newptr;
 }
 
+//Overloading delete
 void Student::operator delete(void* ptr)                    //it calls destrutor first so there memory for name and branch are deallocated
 {
     cout<<"\nDeleting Student Object";
@@ -88,6 +94,7 @@ void Student::setRollNo(int rno)
     this->roll_no=rno;
 }
 
+//Destructor
 Student::~Student()
 {
     //freeing the memory which was allocated to name and branch arrays,handling the case when the object goes out of scope

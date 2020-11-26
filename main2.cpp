@@ -5,6 +5,11 @@
     ================================================================================================================
 */
 
+/*
+    This is the driver program for Q2,it has implementations of all the functions of the Polar class.
+    It demonstrates operator overloading(+).
+*/
+
 #include"Polar.h"  
 using namespace std;
 

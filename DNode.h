@@ -5,7 +5,7 @@
     ================================================================================================================
 */
 
-//class DNode
+//class DNode(representing a node in the DLL)
 
 #ifndef DNODE_H
 #define DNODE_H
@@ -35,6 +35,7 @@ class DNode{
         void setNext(DNode<T>*);
 };
 
+//default constructor
 template<typename T>
 DNode<T>::DNode()
 {
@@ -42,12 +43,14 @@ DNode<T>::DNode()
     this->next=NULL;
 }
 
+//Destructor
 template<typename T>
 DNode<T>::~DNode()
 {
     cout<<"\nDestructing DLL Node";
 }
 
+//parameterized constructor
 template<typename T>
 DNode<T>::DNode(T data)
 {
@@ -56,7 +59,7 @@ DNode<T>::DNode(T data)
     this->next=NULL;
 }
 
-//copy constructor, makes a node with same data as passed objects but the links are set to null 
+//copy constructor, makes a node with same data as passed objects but the links are not copied(as its making a copy of data) 
 template<typename T>
 DNode<T>::DNode(const DNode<T> &obj)
 {

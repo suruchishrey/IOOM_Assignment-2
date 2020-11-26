@@ -18,7 +18,7 @@ class StudentArray{
         Student* student[MAX_SIZE];
         int curr_size;
     public:
-        StudentArray();                         //parameterized constructor can't be there because both the data members are fixed,can't be changed by the user
+        StudentArray();                         //parameterized constructor can't be there because both the data members are fixed,can't be altered by the user
         StudentArray(const StudentArray &obj);  //copy constructor
         Student& operator [](int index);
         void insertStudent(char name[],int rno,char branch[],int index);

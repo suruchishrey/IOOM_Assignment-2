@@ -28,6 +28,7 @@ Polar::Polar(const Polar &obj)
     this->angle=obj.angle;
 }
 
+//overloading operator+
 Polar Polar::operator+(Polar const &obj)
 {
     cout<<"\nExecuting Addition";
@@ -74,6 +75,7 @@ void Polar::print()
     cout<<"\nRadius= "<<this->radius<<"\nAngle= "<<this->angle;
 }
 
+//destructor
 Polar::~Polar()
 {
     cout<<"\nDestructing Polar object";

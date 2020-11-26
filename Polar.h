@@ -20,9 +20,11 @@ class Polar{
         Polar();
         Polar(float radius,float angle);
         Polar(const Polar &obj);                    //copy constructor
+
         // This is automatically called when '+' is used with 
         // between two Polar objects 
         Polar operator+(Polar const &obj);
+        
         float getAngle();
         float getRadius();
         void setAngle(float);

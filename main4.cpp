@@ -5,6 +5,10 @@
     ================================================================================================================
 */
 
+/*
+    This is the driver program for Q4,it has implementations of all the functions of the Complex class.
+    It demonstrates operator overloading for operator / and catches exception divide by zero,if denominator is zero in division.
+*/
 #include"Complex.h"
 
 using namespace std;

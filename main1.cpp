@@ -5,8 +5,15 @@
     ================================================================================================================
 */
 
+/*
+    This is the driver program for Q1,it has implementations of all the functions of the Student class and StudentArray class.
+    It demonstrates operator overloading for operators new,delete and [].
+    It allocates memory for 5 students first at the start of program and then take their details as i/p then deletes them after showing.
+*/
+
 #include"Student.h"
 #include"StudentArray.h"
+
 using namespace std;
 
 int main()
@@ -15,7 +22,7 @@ int main()
     char name[21],branch[10];
     StudentArray studentArray;
     //Executing Question 1
-    cout<<"Demonstrating Question1\n";
+    cout<<"\nDemonstrating Question1\n";
     cout<<"Enter the name, roll no and branch of "<<MAX_SIZE<<" students:";
     i=0;
     while(i<MAX_SIZE)
@@ -39,10 +46,16 @@ int main()
         i++;
     }
 
-    /*-----------Demo for subscript overloading (can uncomment if want to see,program exits)------------------------
+    cout<<"\nCreating a random object with new and deleting it with delete(just for demonstration)";
+    strcpy(name,"Suruchi");
+    strcpy(branch,"CSE");
+    Student*sptr=new Student(name,14,branch);
+    cout<<"\nNew object is: \n";
+    sptr->display_data();
+    delete sptr;
+
     cout<<"\nTrying to access wrong index(Student[6])\n";
-    studentArray[6].display_data();
-    */
+    studentArray[6];
     
     cout<<"\nQuestion1 ended, Student objects will be deleted at the end of this program when destructor will be called.\n";
 

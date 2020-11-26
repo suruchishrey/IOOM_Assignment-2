@@ -6,6 +6,7 @@
 */
 
 //class DoublyLinkedList
+
 #ifndef DOUBLYLINKEDLIST_H
 #define DOUBLYLINKEDLIST_H
 #include"DNode.h"
@@ -15,7 +16,7 @@ using namespace std;
 template<typename T>
 class DoublyLinkedList{
     private:
-        int curr_size;
+        int curr_size;                          //stores number of nodes in the dll currently
         DNode<T>* head;
         DNode<T>* tail;
     public:
@@ -36,6 +37,7 @@ class DoublyLinkedList{
         int getCurrSize();
 };
 
+//default constructor
 template<typename T>
 DoublyLinkedList<T>::DoublyLinkedList()
 {
@@ -44,18 +46,19 @@ DoublyLinkedList<T>::DoublyLinkedList()
     this->tail=NULL;
 }
 
+//destructor
 template<typename T>
 DoublyLinkedList<T>::~DoublyLinkedList()
 {
     cout<<"\nDestructing the doubly linked list... ";
     DNode<T>* temp=NULL;
+    //deleting the nodes one by one
     while(this->head)
     {
         temp=this->head;
         head=head->getNext();
         delete temp;
     }
-    this->head=NULL;
     this->tail=NULL;
     this->curr_size=0;
 }
@@ -68,49 +71,52 @@ DoublyLinkedList<T>::DoublyLinkedList(const DoublyLinkedList<T> &obj)
     {
         throw "Exception Thrown! Can't initialise with an Empty List!";
     }
-    cout<<"\nCopy constructor called...Copying the list";
+    cout<<"\nCopy constructor called...Initialiasing the list with passed object";
     this->head=NULL;
     this->tail=NULL;
     this->curr_size=0;
-    DNode<T>* ptr=obj.head;
+    DNode<T>* ptr=obj.head;                //pointer for iteration
     while(ptr!=NULL)
     {
-        this->insertAtBack(ptr->getdata());
+        this->insertAtBack(ptr->getdata());                 //copying the data one by one       
         ptr=ptr->getNext;
     }
 }
 
+//returns true if list is empty
 template<typename T>
 bool DoublyLinkedList<T>::isEmpty()
 {
     return (this->head==NULL);
 }
 
+//creates a new node and returns its pointer
 template<typename T>
 DNode<T>* DoublyLinkedList<T>::MakeDNode(T data)
 {
     DNode<T>*newptr=new DNode<T>(data);
     if(newptr==NULL)
     {
-        throw "Null Pointer Exception!";
+        throw "Null Pointer Exception!Memory couldn't be allocated!";                //throw exception if memory couldn't be allocated
     }
     return newptr;
 }
 
-//overloaded MakeDNode
+//overloaded MakeDNode,creates a new node with data members from passed arguments 
 template<typename T>
 DNode<T>* DoublyLinkedList<T>::MakeDNode(DNode<T>*prev,T data,DNode<T>*next)
 {
     DNode<T>*newptr=new DNode<T>(data);
     if(newptr==NULL)
     {
-        throw "Null Pointer Exception!";
+        throw "Null Pointer Exception!Memory couldn't be allocated!";               //throw exception if memory couldn't be allocated
     }
     newptr->setPrev(prev);
     newptr->setNext(next);
     return newptr;
 }
 
+//this method inserts the data(new node) at the front of the dll
 template<typename T>
 void DoublyLinkedList<T>::insertAtFront(T data)
 {
@@ -121,13 +127,14 @@ void DoublyLinkedList<T>::insertAtFront(T data)
     {        
         throw;           //rethrowing the exception out of the function
     }
-    if(this->isEmpty())
+    if(this->isEmpty())             //if dll is empty make the head and tail point to the newnode 
     {
         this->head=newNode;
         this->tail=newNode;
         this->curr_size++;
     }
     else{
+        //inserting at front 
         this->head->setPrev(newNode);
         newNode->setNext(this->head);
         this->head=newNode;
@@ -135,6 +142,7 @@ void DoublyLinkedList<T>::insertAtFront(T data)
     }
 }
 
+//this method inserts the data(new node) at the back of the dll
 template<typename T>
 void DoublyLinkedList<T>::insertAtBack(T data)
 {
@@ -145,13 +153,14 @@ void DoublyLinkedList<T>::insertAtBack(T data)
     {        
         throw;           //rethrowing the exception out of the function
     }
-    if(this->isEmpty())
+    if(this->isEmpty())             //if the dll is empty,then the new node would be the only node in the list          
     {
         this->head=newNode;
         this->tail=newNode;
         this->curr_size++;
     }
     else{
+        //inserting at back
         this->tail->setNext(newNode);
         newNode->setPrev(this->tail);
         this->tail=newNode;
@@ -161,7 +170,7 @@ void DoublyLinkedList<T>::insertAtBack(T data)
 
 //function for inserting the data before some other data
 template<typename T>
-bool DoublyLinkedList<T>::insertBefore(T refdata, T data)
+bool DoublyLinkedList<T>::insertBefore(T refdata, T data)       //arguments are the reference data and data to be added
 {
     bool retval=true;
     if(this->isEmpty())
@@ -170,11 +179,12 @@ bool DoublyLinkedList<T>::insertBefore(T refdata, T data)
         throw "Exception thrown!Insertion Error!List is Empty!";
     }
     else{
+        //Inserting the data before the reference node
             DNode<T>* pos=this->searchNode(refdata);
             DNode<T>* beforeCurr=pos->getPrev();
             DNode<T>*newNode;
             try{
-                newNode=MakeDNode(beforeCurr,data,pos);
+                newNode=MakeDNode(beforeCurr,data,pos);     //as this can throw exception
             }catch(const char* msg)
             {        
                 throw;           //rethrowing the exception out of the function
@@ -193,16 +203,18 @@ bool DoublyLinkedList<T>::insertBefore(T refdata, T data)
     return retval;
 }
 
+//function for inserting the data before some other data
 template<typename T>
-bool DoublyLinkedList<T>::insertAfter(T refdata,T data)
+bool DoublyLinkedList<T>::insertAfter(T refdata,T data)              //arguments are the reference data and data to be added       
 {
     bool retval=true;
     if(this->isEmpty())
     {
         retval=false;
-        throw "Exception thrown!Insertion Error!List is Empty!";
+        throw "Exception thrown!Insertion Error!List is Empty!";            //throw exception if list is empty
     }
     else{
+        //Inserting the data after the reference node
             DNode<T>* pos=this->searchNode(refdata);
             DNode<T>* AfterCurr=pos->getNext();
             DNode<T>*newNode;
@@ -226,6 +238,7 @@ bool DoublyLinkedList<T>::insertAfter(T refdata,T data)
     return retval;
 }
 
+//this method deletes the node containing the passed data
 template<typename T>
 bool DoublyLinkedList<T>::deleteNode(T data)
 {
@@ -236,7 +249,7 @@ bool DoublyLinkedList<T>::deleteNode(T data)
         throw "Exception thrown!Delete Error!List is Empty!";
     }
     else{
-            DNode<T>*removeNode=this->searchNode(data);
+            DNode<T>*removeNode=this->searchNode(data); 
             DNode<T>*beforeRemove=removeNode->getPrev();
             DNode<T>*afterRemove=removeNode->getNext();
             if (afterRemove==NULL) {                    //if node to be deleted is the last node
@@ -261,7 +274,7 @@ bool DoublyLinkedList<T>::deleteNode(T data)
     return retval;
 }
 
-//this function return the position node's pointer and null if data doesn't exist in the DLL
+//this function returns the position node's pointer and null if data doesn't exist in the DLL
 template<typename T>
 DNode<T>* DoublyLinkedList<T>::searchNode(T data)
 {
@@ -290,6 +303,7 @@ DNode<T>* DoublyLinkedList<T>::searchNode(T data)
     return retval;
 }
 
+//this method traverses the dll from head to tail and prints the data
 template<typename T>
 void DoublyLinkedList<T>::traverseFromHead()
 {
@@ -308,6 +322,7 @@ void DoublyLinkedList<T>::traverseFromHead()
     }
 }
 
+//this method traverses the dll from tail to head and prints the data
 template<typename T>
 void DoublyLinkedList<T>::traverseFromTail()
 {
@@ -326,6 +341,7 @@ void DoublyLinkedList<T>::traverseFromTail()
     }
 }
 
+//this method returns the current size(no. of nodes) in the dll
 template<typename T>
 int DoublyLinkedList<T>::getCurrSize()
 {

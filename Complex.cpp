@@ -9,11 +9,13 @@
 
 using namespace std;
 
+//default constructor
 Complex::Complex()
 {
     cout<<"\nDefault Constructor called";
 }
 
+//parameterized constructor
 Complex::Complex(float real,float imag)
 {
     cout<<"\nParameterized Constructor called";
@@ -21,6 +23,7 @@ Complex::Complex(float real,float imag)
     this->imag=imag;
 }
 
+//copy constuctor
 Complex::Complex(const Complex &obj)
 {
     cout<<"\nCopy Constructor called";
@@ -73,6 +76,7 @@ void Complex::print()
     cout<<this->real<<" + "<<this->imag<<"i";
 }
 
+//Destructor
 Complex::~Complex()
 {
     cout<<"\nDestructing Complex object";

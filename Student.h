@@ -4,11 +4,14 @@
     Roll no. - BT18CSE014
     ================================================================================================================
 */
-//Student class
+
+//Student class,this class represents a student,contains his name,branch and roll no and functions to create a student and delete it
+
 #ifndef STUDENT_H    //prevent multiple inclusions
 #define STUDENT_H
 
 #include<iostream>
+#include<string.h>
 
 class Student{
     private:
