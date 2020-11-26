@@ -6,18 +6,31 @@
 */
 
 #include"Polar.h"
+using namespace std;
 
-Polar::Polar(){}
+Polar::Polar()
+{
+     cout<<"\nDefault Constructor called";
+}
 
 Polar::Polar(float radius,float angle)
 {
+    cout<<"\nParameterized Constructor called";
     this->radius=radius;
     this->angle=angle;
 }
 
+//copy constructor
+Polar::Polar(const Polar &obj)
+{
+    cout<<"\nCopy Constructor called";
+    this->radius=obj.radius;
+    this->angle=obj.angle;
+}
+
 Polar Polar::operator+(Polar const &obj)
 {
-    cout<<"\nExecuting Addition\n";
+    cout<<"\nExecuting Addition";
     Polar result;
     float x1,y1,x2,y2,res_x,res_y,res_radius,res_angle;
     //converting the polar objects into rectangular coordinates
@@ -36,7 +49,32 @@ Polar Polar::operator+(Polar const &obj)
     return result;
 }
 
+float Polar::getAngle()
+{
+    return this->angle;
+}
+
+float Polar::getRadius()
+{
+    return this->radius;
+}
+
+void Polar::setAngle(float angle)
+{
+    this->angle=angle;
+}
+
+void Polar::setRadius(float radius)
+{
+    this->radius=radius;
+}
+
 void Polar::print()
 {
     cout<<"\nRadius= "<<this->radius<<"\nAngle= "<<this->angle;
+}
+
+Polar::~Polar()
+{
+    cout<<"\nDestructing Polar object";
 }

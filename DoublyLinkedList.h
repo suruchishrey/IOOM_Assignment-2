@@ -10,6 +10,8 @@
 #define DOUBLYLINKEDLIST_H
 #include"DNode.h"
 
+using namespace std;
+
 template<typename T>
 class DoublyLinkedList{
     private:
@@ -19,18 +21,21 @@ class DoublyLinkedList{
     public:
         DoublyLinkedList();
         ~DoublyLinkedList();
+        DoublyLinkedList(const DoublyLinkedList<T> &obj);
         bool isEmpty();
         DNode<T>*MakeDNode(T value);
         DNode<T>*MakeDNode(DNode<T>*prev,T data,DNode<T>*next);
         void insertAtFront(T data);
         void insertAtBack(T data);
-        bool insertBefore(DNode<T>*curr, T data);
-        bool insertAfter(DNode<T>*curr, T data);
-        bool deleteNode(DNode<T>*delptr);
+        bool insertBefore(T refdata,T data);
+        bool insertAfter(T refdata,T data);
+        bool deleteNode(T data);
         DNode<T>* searchNode(T data);
         void traverseFromHead();
         void traverseFromTail();
+        int getCurrSize();
 };
+
 template<typename T>
 DoublyLinkedList<T>::DoublyLinkedList()
 {
@@ -42,17 +47,37 @@ DoublyLinkedList<T>::DoublyLinkedList()
 template<typename T>
 DoublyLinkedList<T>::~DoublyLinkedList()
 {
-    cout<<"\nDestructing the doubly linked list of type \n";
+    cout<<"\nDestructing the doubly linked list... ";
     DNode<T>* temp=NULL;
     while(this->head)
     {
         temp=this->head;
-        head=head->next;
+        head=head->getNext();
         delete temp;
     }
     this->head=NULL;
     this->tail=NULL;
     this->curr_size=0;
+}
+
+//copy constructor
+template<typename T>
+DoublyLinkedList<T>::DoublyLinkedList(const DoublyLinkedList<T> &obj)
+{
+    if(obj.curr_size==0)                                //throwing exception if passed list is empty
+    {
+        throw "Exception Thrown! Can't initialise with an Empty List!";
+    }
+    cout<<"\nCopy constructor called...Copying the list";
+    this->head=NULL;
+    this->tail=NULL;
+    this->curr_size=0;
+    DNode<T>* ptr=obj.head;
+    while(ptr!=NULL)
+    {
+        this->insertAtBack(ptr->getdata());
+        ptr=ptr->getNext;
+    }
 }
 
 template<typename T>
@@ -81,9 +106,8 @@ DNode<T>* DoublyLinkedList<T>::MakeDNode(DNode<T>*prev,T data,DNode<T>*next)
     {
         throw "Null Pointer Exception!";
     }
-    this->data=data;
-    this->prev=prev;
-    this->next=next;
+    newptr->setPrev(prev);
+    newptr->setNext(next);
     return newptr;
 }
 
@@ -91,8 +115,12 @@ template<typename T>
 void DoublyLinkedList<T>::insertAtFront(T data)
 {
     DNode<T>*newNode;
-    newNode=MakeDNode(data);
-    
+    try{
+        newNode=MakeDNode(data);
+    }catch(const char* msg)
+    {        
+        throw;           //rethrowing the exception out of the function
+    }
     if(this->isEmpty())
     {
         this->head=newNode;
@@ -100,8 +128,8 @@ void DoublyLinkedList<T>::insertAtFront(T data)
         this->curr_size++;
     }
     else{
-        this->head->prev=newNode;
-        newNode->next=this->head;
+        this->head->setPrev(newNode);
+        newNode->setNext(this->head);
         this->head=newNode;
         this->curr_size++;
     }
@@ -115,7 +143,7 @@ void DoublyLinkedList<T>::insertAtBack(T data)
         newNode=MakeDNode(data);
     }catch(const char* msg)
     {        
-        cerr << msg << endl;
+        throw;           //rethrowing the exception out of the function
     }
     if(this->isEmpty())
     {
@@ -124,107 +152,82 @@ void DoublyLinkedList<T>::insertAtBack(T data)
         this->curr_size++;
     }
     else{
-        this->tail->next=newNode;
-        newNode->prev=this->tail;
+        this->tail->setNext(newNode);
+        newNode->setPrev(this->tail);
         this->tail=newNode;
         this->curr_size++;
     }
 }
 
+//function for inserting the data before some other data
 template<typename T>
-bool DoublyLinkedList<T>::insertBefore(DNode<T>*curr, T data)
+bool DoublyLinkedList<T>::insertBefore(T refdata, T data)
 {
     bool retval=true;
     if(this->isEmpty())
     {
         retval=false;
+        throw "Exception thrown!Insertion Error!List is Empty!";
     }
     else{
-        DNode<T>* pos=this->head;
-        while(pos!=NULL)
-        {
-            if(pos==curr)
-            {
-                break;                      //found the reference node
-            }
-            pos=pos->next;
-        }
-        if(pos==NULL)                       //coudn't find the reference node return false
-        {
-            retval=false;
-        }
-        else
-        {
-            DNode<T>* beforeCurr=pos->prev;
+            DNode<T>* pos=this->searchNode(refdata);
+            DNode<T>* beforeCurr=pos->getPrev();
             DNode<T>*newNode;
             try{
                 newNode=MakeDNode(beforeCurr,data,pos);
             }catch(const char* msg)
             {        
-                cerr << msg << endl;
+                throw;           //rethrowing the exception out of the function
             }
             if(beforeCurr==NULL)           //if reference node is head,then make new node the head
             {
                 this->head=newNode;
             }
             else{
-                beforeCurr->next=newNode;
+                beforeCurr->setNext(newNode);
             }
-            curr->prev=newNode;
+            pos->setPrev(newNode);
+            this->curr_size++;
         }
         
-    }
     return retval;
 }
 
 template<typename T>
-bool DoublyLinkedList<T>::insertAfter(DNode<T>*curr, T data)
+bool DoublyLinkedList<T>::insertAfter(T refdata,T data)
 {
     bool retval=true;
     if(this->isEmpty())
     {
         retval=false;
+        throw "Exception thrown!Insertion Error!List is Empty!";
     }
     else{
-        DNode<T>* pos=this->head;
-        while(pos!=NULL)
-        {
-            if(pos==curr)
-            {
-                break;                      //found the reference node
-            }
-            pos=pos->next;
-        }
-        if(pos==NULL)                       //coudn't find the reference node return false
-        {
-            retval=false;
-        }
-        else
-        {
-            DNode<T>* AfterCurr=pos->next;
+            DNode<T>* pos=this->searchNode(refdata);
+            DNode<T>* AfterCurr=pos->getNext();
             DNode<T>*newNode;
             try{
                 newNode=MakeDNode(pos,data,AfterCurr);
             }catch(const char* msg)
             {        
-                cerr << msg << endl;
+                throw;                    //rethrowing the exception out of the function
             }
             if(AfterCurr==NULL)           //if reference node is tail,then make new node the tail
             {
                 this->tail=newNode;
             }
             else{
-                AfterCurr->prev=newNode;
+                AfterCurr->setPrev(newNode);
             }
-            curr->next=newNode;
+            pos->setNext(newNode);
+            this->curr_size++;
         }
         
-    }
     return retval;
 }
 
 template<typename T>
-bool DoublyLinkedList<T>::deleteNode(DNode<T>*delptr)
+bool DoublyLinkedList<T>::deleteNode(T data)
 {
     bool retval=true;
     if(this->isEmpty())
@@ -233,42 +236,28 @@ bool DoublyLinkedList<T>::deleteNode(DNode<T>*delptr)
         throw "Exception thrown!Delete Error!List is Empty!";
     }
     else{
-        DNode<T>*removeNode=this->head;
-        while(removeNode!=NULL)
-        {
-            if(removeNode==delptr)
-            {
-                break;
-            }
-            removeNode=removeNode->next;
-        }
-        if(removeNode==NULL)
-        {
-            retval=false;
-            throw "Exception thrown!Delete Error!This data doesnot exist in the List!";
-        }
-        else{
-            DNode<T>*beforeRemove=removeNode->prev;
-            DNode<T>*afterRemove=removeNode->next;
+            DNode<T>*removeNode=this->searchNode(data);
+            DNode<T>*beforeRemove=removeNode->getPrev();
+            DNode<T>*afterRemove=removeNode->getNext();
             if (afterRemove==NULL) {                    //if node to be deleted is the last node
                 this->tail = beforeRemove;
-                this->tail->next=NULL;
+                this->tail->setNext(NULL);
             }
             else {
-                afterRemove->prev = beforeRemove;
+                afterRemove->setPrev(beforeRemove);
             }
             if (beforeRemove==NULL) {                   //if node to be deleted is the first node
                 this->head = afterRemove;
-                this->head->prev=NULL;
+                this->head->setPrev(NULL);
             }
             else {
-                beforeRemove->next = afterRemove;
+                beforeRemove->setNext(afterRemove);
             }
-            cout<<"\nDeleting node with data= "<<removeNode->data;
+            cout<<"\nDeleting node with data= "<<removeNode->getdata();
             delete removeNode;
             this->curr_size--;
         }
-    }
+    
     return retval;
 }
 
@@ -280,17 +269,17 @@ DNode<T>* DoublyLinkedList<T>::searchNode(T data)
     if(this->isEmpty())
     {
         retval=NULL;
-        throw "Exception thrown!Delete Error!List is Empty!";
+        throw "Exception thrown!Search Error!List is Empty!";
     }
     else{
         DNode<T>* pos=this->head;
         while(pos!=NULL)
         {
-            if(pos->data==data)
+            if(pos->getdata()==data)
             {
                 break;
             }
-            pos=pos->next;
+            pos=pos->getNext();
         }
         retval=pos;
     }
@@ -312,8 +301,8 @@ void DoublyLinkedList<T>::traverseFromHead()
         DNode<T>* ptr=this->head;
         while(ptr!=NULL)
         {
-            cout<<ptr->data<<" --> ";
-            ptr=ptr->next;
+            cout<<ptr->getdata()<<" --> ";
+            ptr=ptr->getNext();
         }
         cout<<"NULL";
     }
@@ -330,10 +319,17 @@ void DoublyLinkedList<T>::traverseFromTail()
         DNode<T>* ptr=this->tail;
         while(ptr!=NULL)
         {
-            cout<<ptr->data<<" --> ";
-            ptr=ptr->prev;
+            cout<<ptr->getdata()<<" --> ";
+            ptr=ptr->getPrev();
         }
         cout<<"NULL";
     }
 }
+
+template<typename T>
+int DoublyLinkedList<T>::getCurrSize()
+{
+    return this->curr_size;
+}
+
 #endif

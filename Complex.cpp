@@ -7,12 +7,25 @@
 
 #include"Complex.h"
 
-Complex::Complex(){}
+using namespace std;
+
+Complex::Complex()
+{
+    cout<<"\nDefault Constructor called";
+}
 
 Complex::Complex(float real,float imag)
 {
+    cout<<"\nParameterized Constructor called";
     this->real=real;
     this->imag=imag;
+}
+
+Complex::Complex(const Complex &obj)
+{
+    cout<<"\nCopy Constructor called";
+    this->real=obj.real;
+    this->imag=obj.imag;
 }
 
 //Division of two complex numbers-> (a+bi)/(c+di) =(ac+bd)/(c2 + d2) + (bc-ad)/(c2 + d2)i
@@ -34,8 +47,33 @@ Complex Complex::operator/(Complex const &obj)
     return result;
 }
 
+float Complex::getRealPart()
+{
+    return this->real;
+}
+
+float Complex::getImagPart()
+{
+    return this->imag;
+}
+
+void Complex::setImagPart(float imag)
+{
+    this->imag=imag;
+}
+
+void Complex::setRealPart(float real)
+{
+    this->real=real;
+}
+
 void Complex::print()
 {
     cout<<"\nReal= "<<this->real<<" ,Imaginary= "<<this->imag<<" ==> ";
     cout<<this->real<<" + "<<this->imag<<"i";
+}
+
+Complex::~Complex()
+{
+    cout<<"\nDestructing Complex object";
 }

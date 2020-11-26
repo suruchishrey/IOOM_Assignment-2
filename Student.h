@@ -9,7 +9,6 @@
 #define STUDENT_H
 
 #include<iostream>
-using namespace std;
 
 class Student{
     private:
@@ -19,6 +18,8 @@ class Student{
     public:
         Student();
         Student(char name[],int rno,char branch[]);
+        Student(const Student &obj);                    //copy constructor
+        ~Student();
         void* operator new(size_t size);
         void operator delete(void * ptr);
         void display_data();

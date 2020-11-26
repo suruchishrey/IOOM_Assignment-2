@@ -7,38 +7,49 @@
 
 #include<string.h>
 #include"Student.h"
+using namespace std;
 
-Student::Student(){}
+Student::Student(){
+    cout<<"\nConstructor called allocating memory for name and branch";
+    //allocating memory in heap
+    this->name=::new char[21];
+    this->branch=::new char[10];
+}
 
 Student::Student(char name[],int rno,char branch[])
 {
-    strcpy(this->name,name);
-    this->roll_no=rno;
-    strcpy(this->branch,branch);
+    cout<<"\nConstructor called allocating memory for name and branch";
+    //allocating memory in heap
+    this->name=::new char[21];
+    this->branch=::new char[10];
+    this->setName(name);
+    this->setRollNo(rno);
+    this->setBranch(branch);
 }
 
+Student::Student(const Student &obj)
+{
+    cout<<"\nConstructor called allocating memory for name and branch";
+    //allocating memory in heap
+    this->name=::new char[21];
+    this->branch=::new char[10];
+    this->setName(obj.name);
+    this->setBranch(obj.branch);
+    this->setRollNo(obj.roll_no);
+}
+
+//Allocating memory for Student object
 void* Student::operator new(size_t size)
 {
-    cout<<"Constructing Student Object\n";
+    cout<<"\nConstructing Student Object(new)";
     void*newptr=malloc(size);
-
-    /*reinterpret_cast converts the pointer type,here newptr is being converted to Student*(for the current Student object) and then through 
-    newptr,name is being accessed and then malloc is called (memory is allocated) which returns void* which is being converted to char* for name 
-    */
-    (reinterpret_cast<Student *>(newptr))->name = reinterpret_cast<char *>(malloc(21));     
-
-    /*Similarly here,memory for branch is being allocated*/          
-    (reinterpret_cast<Student *>(newptr))->branch = reinterpret_cast<char *>(malloc(10));
     return newptr;
 }
 
-void Student::operator delete(void* ptr)
+void Student::operator delete(void* ptr)                    //it calls destrutor first so there memory for name and branch are deallocated
 {
-    cout<<"\nDestructing Student Object";
-    //firstly freeing the memory which was allocated to name and branch arrays 
-    free(reinterpret_cast<void *>(reinterpret_cast<Student *>(ptr)->name));        //convert ptr to name to Student*,then Student* to void* for delete
-    free(reinterpret_cast<void *>(reinterpret_cast<Student *>(ptr)->branch));      //convert ptr to branch to Student*,then Student* to void* for delete
-    //then free the memory allocated to student object
+    cout<<"\nDeleting Student Object";
+    //freeing the memory allocated to student object
     free(ptr);
 } 
 
@@ -75,4 +86,12 @@ void Student::setBranch(char branch[])
 void Student::setRollNo(int rno)
 {
     this->roll_no=rno;
+}
+
+Student::~Student()
+{
+    //freeing the memory which was allocated to name and branch arrays,handling the case when the object goes out of scope
+    cout<<"\nDestructor called,freeing memory of name and branch";
+    free(this->name);
+    free(this->branch);
 }

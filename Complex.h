@@ -13,8 +13,6 @@
 #include<math.h>            //for pow()
 #include<stdexcept>        // To use runtime_error 
 
-using namespace std;
-
 class Complex{
     private:
         float real;
@@ -22,7 +20,13 @@ class Complex{
     public:
         Complex();
         Complex(float ,float );
+        Complex(const Complex &obj);
         Complex operator/(Complex const &obj);
+        float getRealPart();
+        float getImagPart();
+        void setRealPart(float);
+        void setImagPart(float);
         void print();
+        ~Complex();
 };
 #endif
