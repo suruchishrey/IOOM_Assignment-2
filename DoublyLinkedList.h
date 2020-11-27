@@ -4,12 +4,15 @@
     Roll no. - BT18CSE014
     ================================================================================================================
 */
-
+/*
+ASSUMPTION- deleteNode() function has to delete all the nodes with the given data
+*/
 //class DoublyLinkedList
 
 #ifndef DOUBLYLINKEDLIST_H
 #define DOUBLYLINKEDLIST_H
 #include"DNode.h"
+#include <new>                    //for bad_alloc exception
 
 template<typename T>
 class DoublyLinkedList{
