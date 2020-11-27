@@ -91,6 +91,61 @@ DNode<T>* DoublyLinkedList<T>::MakeDNode(DNode<T>*prev,T data,DNode<T>*next)
     return newptr;
 }
 
+//function for ordered insertion
+template<typename T>
+void DoublyLinkedList<T>:: Insert(T data)  
+{ 
+    DNode<T>*newNode;
+    try{
+        newNode=MakeDNode(data);
+    }catch(const char* msg)
+    {        
+        throw;           //rethrowing the exception out of the function
+    } 
+  
+    // If first node to be inserted in doubly  
+    // linked list  
+    if(this->isEmpty())             //if dll is empty make the head and tail point to the newnode 
+    {
+        this->head=newNode;
+        this->tail=newNode;
+        this->curr_size++;
+    }
+    else{
+        // If node to be inserted has value less  
+        // than first node  
+        if ((newNode->getdata()) <= this->head->getdata())  
+        {  
+            newNode->setPrev(NULL);  
+            this->head->setPrev(newNode);  
+            newNode->setNext(this->head);  
+            this->head=newNode; 
+            return;
+        }  
+        // If node to be inserted has value more  
+        // than last node  
+        if ((newNode->getdata()) > this->tail->getdata()) 
+        {  
+            newNode->setPrev(this->tail); 
+            this->tail->setNext(newNode);
+            this->tail=newNode; 
+            return;  
+        }  
+    
+        // Find the node before which we need to  
+        // insert p.  
+        DNode<T> *temp = this->head->getNext();  
+        while ((temp->getdata()) < (newNode->getdata()))  
+            temp = temp->getNext();  
+    
+        // Insert new node before temp  
+        (temp->getPrev())->setNext(newNode);  
+        newNode->setPrev(temp->getPrev());  
+        temp->setPrev(newNode);  
+        newNode->setNext(temp);  
+    }  
+}
+
 //this method inserts the data(new node) at the front of the dll
 template<typename T>
 void DoublyLinkedList<T>::insertAtFront(T data)
@@ -223,29 +278,42 @@ bool DoublyLinkedList<T>::deleteNode(T data)
         retval=false;
         throw "Exception thrown!Delete Error!List is Empty!";
     }
-    else{
-            DNode<T>*removeNode=this->searchNode(data); 
+    else{ 
+        do{
+            DNode<T>*removeNode=this->searchNode(data);
+            if(removeNode==NULL)
+            {
+                throw "Exception thrown!Delete Error!Data doesn't exist!";
+            }
             DNode<T>*beforeRemove=removeNode->getPrev();
             DNode<T>*afterRemove=removeNode->getNext();
-            if (afterRemove==NULL) {                    //if node to be deleted is the last node
-                this->tail = beforeRemove;
-                this->tail->setNext(NULL);
+
+            if(beforeRemove==NULL && afterRemove==NULL)
+            {
+                this->head=beforeRemove;
+                this->tail=afterRemove;
             }
-            else {
-                afterRemove->setPrev(beforeRemove);
-            }
-            if (beforeRemove==NULL) {                   //if node to be deleted is the first node
-                this->head = afterRemove;
-                this->head->setPrev(NULL);
-            }
-            else {
-                beforeRemove->setNext(afterRemove);
+            else{
+                if (afterRemove==NULL) {                    //if node to be deleted is the last node
+                    this->tail = beforeRemove;
+                    this->tail->setNext(NULL);
+                }
+                else {
+                    afterRemove->setPrev(beforeRemove);
+                }
+                if (beforeRemove==NULL) {                   //if node to be deleted is the first node
+                    this->head = afterRemove;
+                    this->head->setPrev(NULL);
+                }
+                else {
+                    beforeRemove->setNext(afterRemove);
+                }
             }
             cout<<"\nDeleting node with data= "<<removeNode->getdata();
             delete removeNode;
             this->curr_size--;
-        }
-    
+        }while(this->searchNode(data));
+    }
     return retval;
 }
 
@@ -257,7 +325,7 @@ DNode<T>* DoublyLinkedList<T>::searchNode(T data)
     if(this->isEmpty())
     {
         retval=NULL;
-        throw "Exception thrown!Search Error!List is Empty!";
+        //throw "Exception thrown!Search Error!List is Empty!";
     }
     else{
         DNode<T>* pos=this->head;
@@ -270,10 +338,6 @@ DNode<T>* DoublyLinkedList<T>::searchNode(T data)
             pos=pos->getNext();
         }
         retval=pos;
-    }
-    if(retval==NULL)
-    {
-        throw "Exception thrown!This data doesnot exist in the List!";
     }
     return retval;
 }

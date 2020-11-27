@@ -24,6 +24,7 @@ class DoublyLinkedList{
         bool isEmpty();
         DNode<T>*MakeDNode(T value);
         DNode<T>*MakeDNode(DNode<T>*prev,T data,DNode<T>*next);
+        void Insert(T data);
         void insertAtFront(T data);
         void insertAtBack(T data);
         bool insertBefore(T refdata,T data);
