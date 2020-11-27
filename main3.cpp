@@ -16,11 +16,12 @@ using namespace std;
 
 int main()
 {
-    int rno,i,choice_dll,input_dll1,choice,choice2;
+    int rno,i,choice_dll,choice,choice2;
+    float input_dll1;
     string input_dll2;
     bool status=true,change_dll=true;
     char ch;
-    DoublyLinkedList<int> deci_DLL;
+    DoublyLinkedList<float> deci_DLL;
     DoublyLinkedList<string> str_DLL;
     //Executing Question3
     cout<<"\nDemonstrating Question3\n";
@@ -97,7 +98,7 @@ int main()
                                 try{
                                     if(choice_dll==1)
                                     {
-                                        int temp;
+                                        float temp;
                                         cin>>temp;
                                         deci_DLL.insertBefore(temp,input_dll1);
                                     }
@@ -123,7 +124,7 @@ int main()
                                 try{
                                     if(choice_dll==1)
                                     {
-                                        int temp;
+                                        float temp;
                                         cin>>temp;
                                         deci_DLL.insertAfter(temp,input_dll1);
                                     }

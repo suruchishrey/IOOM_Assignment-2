@@ -9,6 +9,7 @@
     This is the driver program for Q4,it has implementations of all the functions of the Complex class.
     It demonstrates operator overloading for operator / and catches exception divide by zero,if denominator is zero in division.
 */
+
 #include"Complex.h"
 
 using namespace std;
@@ -38,7 +39,7 @@ int main()
         // try block performs the Division  
         try{
             resultComplex=c1/c2;
-            cout<<"\nResultant object";
+            cout<<"\n---------Resultant object----------";
             resultComplex.print();
             status=false;
         }
@@ -46,7 +47,7 @@ int main()
         catch(runtime_error& e) { 
     
             // prints that exception has occurred, calls the what function using runtime_error object 
-            cout << "\nException occurred" << endl 
+            cout << "\n!!!Exception occurred!!!" << endl 
                 << e.what(); 
                 cout<<"\nEnter new values\n";
         } 
