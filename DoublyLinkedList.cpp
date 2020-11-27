@@ -211,6 +211,10 @@ bool DoublyLinkedList<T>::insertBefore(T refdata, T data)       //arguments are 
     else{
         //Inserting the data before the reference node
             DNode<T>* pos=this->searchNode(refdata);
+            if(pos==NULL)
+            {
+                throw "Exception thrown!Insertion Error!Data doesn't exist!";
+            }
             DNode<T>* beforeCurr=pos->getPrev();
             DNode<T>*newNode;
             try{
@@ -246,6 +250,10 @@ bool DoublyLinkedList<T>::insertAfter(T refdata,T data)              //arguments
     else{
         //Inserting the data after the reference node
             DNode<T>* pos=this->searchNode(refdata);
+            if(pos==NULL)
+            {
+                throw "Exception thrown!Insertion Error!Data doesn't exist!";
+            }
             DNode<T>* AfterCurr=pos->getNext();
             DNode<T>*newNode;
             try{
@@ -268,7 +276,7 @@ bool DoublyLinkedList<T>::insertAfter(T refdata,T data)              //arguments
     return retval;
 }
 
-//this method deletes the node containing the passed data
+//this method deletes all the nodes containing the passed data
 template<typename T>
 bool DoublyLinkedList<T>::deleteNode(T data)
 {
@@ -312,7 +320,7 @@ bool DoublyLinkedList<T>::deleteNode(T data)
             cout<<"\nDeleting node with data= "<<removeNode->getdata();
             delete removeNode;
             this->curr_size--;
-        }while(this->searchNode(data));
+        }while(this->searchNode(data));     //for handling duplicate data
     }
     return retval;
 }
