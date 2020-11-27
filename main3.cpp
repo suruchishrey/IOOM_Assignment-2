@@ -8,10 +8,11 @@
 /*
     This is the driver program for Q3,it has implementations of all the functions of the DoublyLinkedList class.
     It also has the try-catch blocks to handle the exceptions thrown by the functions of that class.
+    ASSUMPTION- deleteNode() function has to delete all the nodes with the given data
 */
 
 #include"DoublyLinkedList.h"
-
+#include <new>                    //for bad_alloc exception
 using namespace std;
 
 int main()
@@ -26,7 +27,7 @@ int main()
     //Executing Question3
     cout<<"\nDemonstrating Question3\n";
     while(change_dll){
-        cout<<"\nMaking new list!\nEnter datatype for the Doubly Linked List:\n1.decimal numbers\n2.strings";
+        cout<<"\nMaking new list!\nEnter datatype for the Doubly Linked List:\n1.decimal numbers\n2.strings\n";
         cin>>choice_dll;
         status=true;
         while(status)
@@ -48,7 +49,7 @@ int main()
                                 cin>>input_dll2;
                             }
                             cout<<"\nWhere do you want to insert it in the list?";
-                            cout<<"\n1.At front\n2.At back\n3.Before some data\n4.After some data\n";
+                            cout<<"\n1.At front\n2.At back\n3.Before some data\n4.After some data\n5.Ordered Insertion\n";
                             cin>>choice;
                             switch(choice)
                             {
@@ -145,9 +146,29 @@ int main()
                                 }                       
                                 break;
 
-                                default:cout<<"\nEnter correct choice(front or back)!";
+                                case 5:
+                                try{
+                                    if(choice_dll==1)
+                                    {
+                                        deci_DLL.Insert(input_dll1);
+                                    }
+                                    else{
+                                        str_DLL.Insert(input_dll2);
+                                    }
+                                }catch (bad_alloc & ba)                             //for exception when attempting to allocate memory with new. 
+                                { 
+                                    cerr << "bad_alloc caught: " << ba.what(); 
+                                } 
+                                catch(const char* msg)                              //for null pointer exception
+                                {        
+                                    cerr << msg << endl;
+                                }       
+                                break;
+
+                                default:cout<<"\nEnter correct choice(front or back or ordered)!";
                                         continue;
                             }
+                            
                             cout<<"\nShowing the DLL(from head to tail) - \n";
                             if(choice_dll==1)
                             {
