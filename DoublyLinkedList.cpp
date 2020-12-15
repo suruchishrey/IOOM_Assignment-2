@@ -4,6 +4,9 @@
     Roll no. - BT18CSE014
     ================================================================================================================
 */
+/*
+ASSUMPTION- deleteNode() function has to delete all the nodes with the given data
+*/
 
 #include"DoublyLinkedList.h"
 
@@ -333,7 +336,7 @@ DNode<T>* DoublyLinkedList<T>::searchNode(T data)
     if(this->isEmpty())
     {
         retval=NULL;
-        //throw "Exception thrown!Search Error!List is Empty!";
+        throw "Exception thrown!Search Error!List is Empty!";
     }
     else{
         DNode<T>* pos=this->head;

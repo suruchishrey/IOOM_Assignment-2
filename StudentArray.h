@@ -15,13 +15,13 @@
 
 class StudentArray{
     private:
-        Student* student[MAX_SIZE];
+        Student student[MAX_SIZE];      //Student Array
         int curr_size;
     public:
         StudentArray();                         //parameterized constructor can't be there because both the data members are fixed,can't be altered by the user
-        StudentArray(const StudentArray &obj);  //copy constructor
+        StudentArray(StudentArray &obj);  //copy constructor
         Student& operator [](int index);
-        void insertStudent(char name[],int rno,char branch[],int index);
+        void insertStudent(Student stu,int index);
         int getCurrSize();
         ~StudentArray();
 };

@@ -15,32 +15,30 @@ using namespace std;
 //default constructor
 StudentArray::StudentArray()
 {
-    cout<<"Constructing Student Database\n";
-    for(int i=0;i<MAX_SIZE;++i)
-    {
-        student[i]=new Student;
-    }
+    cout<<"\nConstructing Student Database\n";
     this->curr_size=0;
 }
 
 //copy constructor
-StudentArray::StudentArray(const StudentArray &obj)
+StudentArray::StudentArray(StudentArray &obj)
 {
     cout<<"Constructing Student Database wid copy constructor\n";
     for(int i=0;i<MAX_SIZE;++i)
     {
-        //allocating memory to Student object using overloaded new and Constructor(parameterized here)
-        student[i]=new Student(obj.student[i]->getName(),obj.student[i]->getRollNo(),obj.student[i]->getBranch());
+        //copying the object fields
+        student[i].setName(obj.student[i].getName());
+        student[i].setRollNo(obj.student[i].getRollNo());
+        student[i].setBranch(obj.student[i].getBranch());
     }
     this->curr_size=obj.curr_size;
 }
 
 //inserts the details of a student into the studentArray at passed index
-void StudentArray::insertStudent(char name[],int rno,char branch[],int index)
+void StudentArray::insertStudent(Student stu,int index)
 {
-    student[index]->setName(name);
-    student[index]->setRollNo(rno);
-    student[index]->setBranch(branch);
+    student[index].setName(stu.getName());
+    student[index].setRollNo(stu.getRollNo());
+    student[index].setBranch(stu.getBranch());
     this->curr_size++;
 }
 
@@ -49,11 +47,10 @@ Student& StudentArray::operator [](int index)
 {
     if(index<0 || index>=MAX_SIZE)
     {
-        cout << "Array index out of bound!"; 
-        //exit(0); 
+        throw "Array index out of bound!"; 
     }
     else{
-        return *(student[index]);
+        return student[index];
     }
 }
 
@@ -63,19 +60,9 @@ int StudentArray::getCurrSize()
     return this->curr_size;
 }
 
-//destructor freeing the memory which we had allocated through constructor
-/*Note:As this is a db class,objects are allocated memory through new in the constructor itself(i.e.,during declaraton of this class's object
-not by using explicit new operator in the main()),thats why are being deleted here(in destructor). This is only for this db class whereas the overloaded 
-new and delete can be used normally in the main program(for creating a Student ibject and deleting it).
-*/
+//destructor (as memory is in stack no need to free them,destructor for Student would get automatically called)
 StudentArray::~StudentArray()
 {
-    cout<<"\nDestructing Student Database";
-    for(int i=0;i<MAX_SIZE;++i)
-    {
-        //using overloaded delete
-        delete student[i];
-    }
-    cout<<"\nStudent database destructed.\n";
+    cout<<"\nDestructing Student Database\n";
 }
 

@@ -12,7 +12,7 @@ using namespace std;
 
 //default constructor
 Student::Student(){
-    cout<<"\nConstructor called allocating memory for name and branch";
+    //cout<<"\nDefault Constructor called allocating memory for name and branch";
     //allocating memory in heap
     this->name=::new char[21];
     this->branch=::new char[10];
@@ -21,7 +21,7 @@ Student::Student(){
 //parameterized constructor
 Student::Student(char name[],int rno,char branch[])
 {
-    cout<<"\nConstructor called allocating memory for name and branch";
+    //cout<<"\nParameterized Constructor called allocating memory for name and branch";
     //allocating memory in heap
     this->name=::new char[21];
     this->branch=::new char[10];
@@ -33,7 +33,7 @@ Student::Student(char name[],int rno,char branch[])
 //copy constructor
 Student::Student(const Student &obj)
 {
-    cout<<"\nConstructor called allocating memory for name and branch";
+    //cout<<"\nCopy Constructor called allocating memory for name and branch";
     //allocating memory in heap
     this->name=::new char[21];
     this->branch=::new char[10];
@@ -98,7 +98,7 @@ void Student::setRollNo(int rno)
 Student::~Student()
 {
     //freeing the memory which was allocated to name and branch arrays,handling the case when the object goes out of scope
-    cout<<"\nDestructor called,freeing memory of name and branch";
+    //cout<<"\nDestructor called,freeing memory of name and branch";
     free(this->name);
     free(this->branch);
 }
